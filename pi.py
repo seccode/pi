@@ -2,18 +2,15 @@ import mpmath
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
+from tqdm import tqdm
 
-# Calculate pi to 10,000 digits
-mpmath.mp.dps=10000
+mpmath.mp.dps=20000
 pi=str(mpmath.pi)[2:]
 
-# Feature vector is index of digit
 x=list(range(len(pi)))
 x=np.array(x).reshape(-1,1)
-
-# Target vector is whether the digit is 0,1,2,3,4 or 5,6,7,8,9
-y=[int(d)>4 for d in pi]
-print("Expected probability "+str(y.count(0)/len(y)))
+y=[int(d)%2==0 for d in pi]
+print(y.count(0)/len(y))
 
 # z tracks the running accuracy of the model
 z=0
@@ -22,11 +19,12 @@ for i in range(1000):
     x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2)
 
     # Build Random Forest Classifier
-    clf=RandomForestClassifier()
+    clf=RandomForestClassifier(class_weight="balanced")
     clf.fit(x_train,y_train)
 
     # Get predictions
-    y_pred=clf.predict(np.array(x_test).reshape(-1,1))
+    y_prob=clf.predict_proba(np.array(x_test).reshape(-1,1))[:,1]
+    y_pred=(y_prob>0.4).astype(int)
 
     # Score predictions
     score=0
