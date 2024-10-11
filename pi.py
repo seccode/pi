@@ -4,7 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
-mpmath.mp.dps=20000
+mpmath.mp.dps=40000
 pi=str(mpmath.pi)[2:]
 
 x=list(range(len(pi)))
