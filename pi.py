@@ -4,12 +4,12 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
-mpmath.mp.dps=40000
+mpmath.mp.dps=10000
 pi=str(mpmath.pi)[2:]
 
 x=list(range(len(pi)))
 x=np.array(x).reshape(-1,1)
-y=[int(d)%2==0 for d in pi]
+y=[d in "01234" for d in pi]
 print(y.count(0)/len(y))
 
 # z tracks the running accuracy of the model
@@ -19,7 +19,7 @@ for i in range(1000):
     x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2)
 
     # Build Random Forest Classifier
-    clf=RandomForestClassifier(class_weight="balanced")
+    clf=RandomForestClassifier()
     clf.fit(x_train,y_train)
 
     # Get predictions
