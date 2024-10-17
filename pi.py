@@ -16,7 +16,7 @@ print(y.count(0)/len(y))
 z=0
 for i in range(1000):
     # Split data into train and test sets
-    x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2)
+    x_train,x_test,y_train,y_test=train_test_split(x,y,stratify=y,test_size=0.2)
 
     # Build Random Forest Classifier
     clf=RandomForestClassifier()
